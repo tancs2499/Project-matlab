@@ -61,31 +61,32 @@ figure,imshow(IABWcrop),title('IABWcrop');
  scor  = zeros(30,4);
  answer = zeros(30,4);
 
-slindx=0;
+
 i2=0;
+j2=0;
 for i=0:29
     i2=i2+1;
+    
       for j = 0:3
-        slindx = slindx+1;   
+        j2=j2+1;  
         W = IABWcrop(1+(42*i):42*(i+1), 58*j+1 : 58*j + 58 );
         figure(4)
         subplot(30,4,i*4+j+1 );
         imshow(W);%,title('W');
         count1 = sum(sum(W));       
-        if count1(i2,slindx) > 700
-            answer(i,j) = 1; 
+        if count1> 700
+            answer(i2,j2) = 1; 
             
         else
-            answer(i,j) = 0;
+            answer(i2,j2) = 0;
            
         end
-         scor(i,j) = answer(i,j);
+         scor(i2,j2) = answer(i2,j2);
         %title(['white pixel = ',num2str(count1),' answer=',num2str(answer)]);
-        title(['chackpoint = ',num2str(scor(i,j))]);
+        title(['chackpoint = ',num2str(scor(i2,j2))]);
       end
-      slindx=0;
+      j2=0;
 end
-
 
 
 I2 = imread('a2.jpg');
@@ -120,7 +121,7 @@ BOX52 = S2(47).BoundingBox ;
  x42 = BOX22(1,1);
  y42 = BOX12(1,2);
  
- x52 = BOX22(1,1):BOX3(1,1);
+ x52 = BOX22(1,1):BOX32(1,1);
  y52 = BOX12(1,2);
  
  x62 = BOX42(1,1);
@@ -146,44 +147,48 @@ figure,imshow(IABWcrop2),title('IABWcrop');
  
 scor2  = zeros(30,4);
 answer2 = zeros(30,4);
-
-slindx2=0;
 i3=0;
+j3=0;
 
 for i=0:29
     i3=i3+1;
     
       for j = 0:3
-         slindx2 = slindx2+1;
+         j3=j3+1;
         W = IABWcrop2(1+(42*i):42*(i+1), 58*j+1 : 58*j + 58 );
         figure(4)
         subplot(30,4,i*4+j+1 );
         imshow(W);%,title('W');
         count2 = sum(sum(W));       
-        if count2() > 700
-            answer2(i,j) = 1; 
+        if count2 > 700
+            answer2(i3,j3) = 1; 
             
         else
-            answer2(i,j) = 0;
+            answer2(i3,j3) = 0;
          
         end
-         scor2(i,j) = answer2(i,j);
+         scor2(i3,j3) = answer2(i3,j3);
         %title(['white pixel = ',num2str(count1),' answer=',num2str(answer)]);
-        title(['chackpoint2 = ',num2str(scor2(i,j))]);
+        title(['chackpoint2 = ',num2str(scor2(i3,j3))]);
       end
-      slindx=0;
+      j3=0;
 end
                
 point = 0;
+score = 0;
 for i=1:30
-    %for j = 1:4
-        compar = chackpoint(m,n) == chackpoint2(mm,nn);
-      if compar
+      for j = 1:4 
+           compar = scor(i,j) == scor2(i,j);
+        if compar
           point = point+1;
+          if point == 4              
+              score = score+1;
+          end
+        end  
       end
-    %end
-    figure(8),%imshow(W)
-    title(['point = ',num2str(point)]);   
+    figure(8),imshow(W)
+    title(['point = ',num2str(score)]);   
+    point=0;
 end
 
 
